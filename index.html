@@ -414,17 +414,32 @@
       object-fit: cover;
       background: var(--surface-2);
       display: block;
-      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
     }
 
-    .view-grid .card img {
+    .card-media {
+      position: relative;
+      flex-shrink: 0;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .view-grid .card-media {
       width: 100%;
       aspect-ratio: 4 / 3;
     }
 
-    .view-list .card img {
+    .view-list .card-media {
       width: 112px;
       height: 84px;
+    }
+
+    .card-media .media-placeholder {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
 
     .card-body {
@@ -586,12 +601,179 @@
       background: var(--border);
     }
 
+    .card img.img-error {
+      display: none;
+    }
+
+    .media-placeholder.hidden {
+      display: none !important;
+    }
+
+    .card .media-placeholder,
+    .modal-media-wrap .media-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 1.75rem;
+      flex-shrink: 0;
+    }
+
+    .view-list .card-media .media-placeholder {
+      font-size: 1.25rem;
+    }
+
+    .modal-media-wrap {
+      position: relative;
+      background: var(--bg);
+    }
+
+    .modal-media-wrap .media-placeholder {
+      position: absolute;
+      inset: 0;
+      min-height: 200px;
+      width: 100%;
+      font-size: 2rem;
+    }
+
+    .modal-media-wrap .modal-media.img-error {
+      display: none;
+    }
+
     .modal-media {
       width: 100%;
       max-height: 320px;
       object-fit: contain;
       background: var(--bg);
       display: block;
+    }
+
+    .media-notice {
+      background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .media-notice strong {
+      color: var(--text);
+    }
+
+    .media-notice button {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .media-settings {
+      width: 100%;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .media-settings summary {
+      cursor: pointer;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .media-settings label {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .media-settings input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      margin-bottom: 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .media-settings p {
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.45;
+    }
+
+    .media-settings button {
+      padding: 0.55rem 0.85rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .media-settings button.secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .cache-status {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .cache-progress {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .cache-progress p {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .cache-progress-bar {
+      height: 8px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .cache-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .cache-progress button {
+      padding: 0.35rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.75rem;
+      cursor: pointer;
     }
 
     .modal-content {
@@ -790,6 +972,7 @@
         order: 2;
         margin-top: 0;
         padding-top: 0;
+        padding-bottom: 1rem;
         border-top: none;
       }
 
@@ -860,6 +1043,16 @@
   </header>
 
   <main>
+    <div id="media-notice" class="media-notice" hidden>
+      <strong>Could not load this exercise GIF.</strong>
+      One exercise may be missing from the backup (<code>0609</code>). All others use your local <code>gifs/</code> folder.
+      <button type="button" id="dismiss-media-notice">Dismiss</button>
+    </div>
+    <div id="cache-progress" class="cache-progress" hidden>
+      <p id="cache-progress-text">Checking CDN…</p>
+      <div class="cache-progress-bar"><div id="cache-progress-fill" class="cache-progress-fill"></div></div>
+      <button type="button" id="cancel-cache-download">Cancel download</button>
+    </div>
     <div class="controls">
       <div class="search-wrap">
         <input type="search" id="search" placeholder="Search exercises..." disabled />
@@ -868,7 +1061,7 @@
     </div>
     <div id="status" class="status">
       <div class="spinner"></div>
-      <p>Loading exercises from GitHub...</p>
+      <p>Loading exercises from data/exercises.json…</p>
     </div>
     <div id="exercises" class="exercises view-grid is-empty"></div>
     <div id="load-more" class="load-more-wrap" hidden>
@@ -884,13 +1077,30 @@
       <select id="filter-target" disabled>
         <option value="">All targets</option>
       </select>
+      <details class="media-settings">
+        <summary>Media settings (GIFs not loading?)</summary>
+        <label for="media-base">Custom media base URL (ends with /)</label>
+        <input type="url" id="media-base" placeholder="https://your-cdn.com/media/" />
+        <label for="rapidapi-key">ExerciseDB RapidAPI key (optional)</label>
+        <input type="password" id="rapidapi-key" placeholder="Your RapidAPI key" autocomplete="off" />
+        <p>
+          GIFs load from your local <code>gifs/</code> folder. Use <strong>Cache GIFs offline</strong> only if you want a browser copy in IndexedDB.
+        </p>
+        <p class="cache-status" id="cache-status">Cache: checking…</p>
+        <button type="button" id="save-media-settings">Save &amp; reload images</button>
+        <button type="button" id="check-cdn-btn" class="secondary">Cache GIFs offline</button>
+        <button type="button" id="clear-cache-btn" class="secondary">Clear cache</button>
+      </details>
     </div>
   </main>
 
   <div id="modal-overlay" class="modal-overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
       <button type="button" class="modal-close" id="modal-close" aria-label="Close">&times;</button>
-      <img id="modal-gif" class="modal-media" alt="" />
+      <div class="modal-media-wrap">
+        <img id="modal-gif" class="modal-media" alt="" />
+        <div id="modal-media-placeholder" class="media-placeholder hidden" aria-hidden="true">💪</div>
+      </div>
       <div class="modal-content">
         <h2 id="modal-title"></h2>
         <div class="meta-grid" id="modal-meta"></div>
@@ -901,8 +1111,24 @@
   </div>
 
   <script>
+    const DATA_URL = "data/exercises.json";
+    const LOCAL_GIFS_BASE = "gifs/";
+    const REMOTE_DATA_URL =
+      "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/data/exercises.json";
     const REPO_BASE = "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/";
-    const DATA_URL = REPO_BASE + "data/exercises.json";
+    const RAPIDAPI_IMAGE = "https://exercisedb.p.rapidapi.com/image";
+    // Remote fallback when local gifs/ folder is not populated
+    const BACKUP_MEDIA_BASE = "https://cdn.jsdelivr.net/gh/omercotkd/exercises-gifs@main/assets/";
+    const CDN_SOURCES = [
+      "https://static.exercisedb.dev/media/",
+      "https://cdn.exercisedb.dev/media/",
+      "https://assets.exercisedb.dev/media/",
+    ];
+    const MEDIA_DB_NAME = "exercises-gif-cache";
+    const MEDIA_DB_VERSION = 1;
+    const MEDIA_STORE = "gifs";
+    const DOWNLOAD_CONCURRENCY = 4;
+    const CDN_CHECK_INTERVAL_MS = 5 * 60 * 1000;
 
     const PAGE_SIZE = 48;
     const LANGS = [
@@ -921,8 +1147,29 @@
     let activeExercise = null;
     let viewMode = "grid";
     let theme = "dark";
+    let mediaDbPromise = null;
+    let blobUrlCache = new Map();
+    let activeCdnBase = null;
+    let activeMediaMode = null;
+    let cdnOnline = false;
+    let isDownloading = false;
+    let downloadCancelled = false;
+    let cdnCheckTimer = null;
 
     const $ = (id) => document.getElementById(id);
+
+    function isFileProtocol() {
+      return location.protocol === "file:";
+    }
+
+    function showServeRequiredError() {
+      showError(
+        `You opened this file directly — the browser cannot load local <code>data/</code> or <code>gifs/</code> that way.<br><br>` +
+        `Your files are already on disk. Just run a local server:<br>` +
+        `<code>npm run serve</code><br><br>` +
+        `Then open <strong>http://localhost:3000</strong> (not the HTML file).`
+      );
+    }
 
     function getStored(key, fallback) {
       try {
@@ -1019,7 +1266,467 @@
     }
 
     function mediaUrl(relativePath) {
+      if (!relativePath) return "";
+      if (/^https?:\/\//i.test(relativePath)) return relativePath;
       return REPO_BASE + relativePath;
+    }
+
+    function openMediaDb() {
+      if (!mediaDbPromise) {
+        mediaDbPromise = new Promise((resolve, reject) => {
+          const request = indexedDB.open(MEDIA_DB_NAME, MEDIA_DB_VERSION);
+          request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(MEDIA_STORE)) {
+              db.createObjectStore(MEDIA_STORE);
+            }
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+      }
+      return mediaDbPromise;
+    }
+
+    function getCacheKey(exercise) {
+      return exercise?.media_id || exercise?.id || "";
+    }
+
+    function localGifUrl(exercise) {
+      return exercise?.id ? LOCAL_GIFS_BASE + exercise.id + ".gif" : "";
+    }
+
+    function backupGifUrl(exercise) {
+      return exercise?.id ? BACKUP_MEDIA_BASE + exercise.id + ".gif" : "";
+    }
+
+    async function getCachedBlobUrlForExercise(exercise) {
+      return getCachedBlobUrl(getCacheKey(exercise));
+    }
+
+    async function saveCachedGifForExercise(exercise, blob) {
+      return saveCachedGif(getCacheKey(exercise), blob);
+    }
+
+    async function getCachedBlob(mediaId) {
+      if (!mediaId) return null;
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, "readonly");
+        const req = tx.objectStore(MEDIA_STORE).get(mediaId);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function getCachedBlobUrl(mediaId) {
+      if (!mediaId) return null;
+      if (blobUrlCache.has(mediaId)) return blobUrlCache.get(mediaId);
+      const blob = await getCachedBlob(mediaId);
+      if (!blob) return null;
+      const url = URL.createObjectURL(blob);
+      blobUrlCache.set(mediaId, url);
+      return url;
+    }
+
+    async function saveCachedGif(mediaId, blob) {
+      if (!mediaId || !blob) return;
+      const db = await openMediaDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, "readwrite");
+        tx.objectStore(MEDIA_STORE).put(blob, mediaId);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+      if (blobUrlCache.has(mediaId)) {
+        URL.revokeObjectURL(blobUrlCache.get(mediaId));
+      }
+      blobUrlCache.set(mediaId, URL.createObjectURL(blob));
+    }
+
+    async function getCachedCount() {
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, "readonly");
+        const req = tx.objectStore(MEDIA_STORE).count();
+        req.onsuccess = () => resolve(req.result || 0);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function clearMediaCache() {
+      const db = await openMediaDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, "readwrite");
+        tx.objectStore(MEDIA_STORE).clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+      for (const url of blobUrlCache.values()) URL.revokeObjectURL(url);
+      blobUrlCache.clear();
+      await updateCacheStatus();
+      if (allExercises.length) applyFilters();
+    }
+
+    function isGifBlob(blob) {
+      return blob && blob.size > 500 && (!blob.type || blob.type.includes("image") || blob.type === "application/octet-stream");
+    }
+
+    async function verifyGifUrl(url) {
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) return false;
+        const blob = await response.blob();
+        if (!isGifBlob(blob)) return false;
+        const header = new Uint8Array(await blob.slice(0, 3).arrayBuffer());
+        return header[0] === 0x47 && header[1] === 0x49 && header[2] === 0x46;
+      } catch {
+        return false;
+      }
+    }
+
+    async function checkCdnOnline() {
+      const sample = allExercises.find((e) => e.id) || { id: "0001", media_id: "2gPfomN" };
+
+      if (sample.id && (await verifyGifUrl(localGifUrl(sample)))) {
+        activeCdnBase = LOCAL_GIFS_BASE;
+        activeMediaMode = "local-id";
+        cdnOnline = true;
+        return true;
+      }
+
+      if (sample.id && (await verifyGifUrl(backupGifUrl(sample)))) {
+        activeCdnBase = BACKUP_MEDIA_BASE;
+        activeMediaMode = "backup-id";
+        cdnOnline = true;
+        return true;
+      }
+
+      const testMediaId = sample.media_id || "2gPfomN";
+      for (const base of CDN_SOURCES) {
+        const url = base + testMediaId + ".gif";
+        if (await verifyGifUrl(url)) {
+          activeCdnBase = base;
+          activeMediaMode = "media-id";
+          cdnOnline = true;
+          return true;
+        }
+      }
+
+      if (getMediaBase()) {
+        const custom = getMediaBase().replace(/\/?$/, "/") + testMediaId + ".gif";
+        if (await verifyGifUrl(custom)) {
+          activeCdnBase = getMediaBase().replace(/\/?$/, "/");
+          activeMediaMode = "media-id";
+          cdnOnline = true;
+          return true;
+        }
+      }
+
+      activeCdnBase = null;
+      activeMediaMode = null;
+      cdnOnline = false;
+      return false;
+    }
+
+    function remoteGifUrl(exercise) {
+      if (activeMediaMode === "local-id" && exercise.id) {
+        return LOCAL_GIFS_BASE + exercise.id + ".gif";
+      }
+      if (activeMediaMode === "backup-id" && exercise.id) {
+        return BACKUP_MEDIA_BASE + exercise.id + ".gif";
+      }
+      if (activeMediaMode === "media-id" && exercise.media_id && activeCdnBase) {
+        return activeCdnBase.replace(/\/?$/, "/") + exercise.media_id + ".gif";
+      }
+      return backupGifUrl(exercise);
+    }
+
+    function setCacheProgress(done, total, message) {
+      const bar = $("cache-progress");
+      const fill = $("cache-progress-fill");
+      const text = $("cache-progress-text");
+      if (message) text.textContent = message;
+      if (total > 0) {
+        fill.style.width = Math.round((done / total) * 100) + "%";
+        text.textContent = message || `Downloading GIFs ${done} / ${total}…`;
+      }
+      bar.hidden = false;
+    }
+
+    function hideCacheProgress() {
+      $("cache-progress").hidden = true;
+      $("cache-progress-fill").style.width = "0%";
+    }
+
+    async function updateCacheStatus() {
+      const el = $("cache-status");
+      if (!el) return;
+      try {
+        const count = await getCachedCount();
+        const total = allExercises.length || 1324;
+        if (count >= total && total > 0) {
+          el.textContent = `Cache: ${count} / ${total} GIFs · fully cached`;
+        } else if (activeMediaMode === "local-id") {
+          el.textContent = `Cache: ${count} / ${total} GIFs · local gifs/`;
+        } else if (activeMediaMode === "backup-id") {
+          el.textContent = `Cache: ${count} / ${total} GIFs · jsDelivr backup`;
+        } else if (cdnOnline && activeCdnBase) {
+          el.textContent = `Cache: ${count} / ${total} GIFs · ExerciseDB CDN`;
+        } else {
+          el.textContent = `Cache: ${count} / ${total} GIFs · checking sources…`;
+        }
+      } catch {
+        el.textContent = "Cache: unavailable";
+      }
+    }
+
+    async function downloadGifForExercise(exercise) {
+      const key = getCacheKey(exercise);
+      if (!key) return false;
+      if (await getCachedBlob(key)) return true;
+
+      const url = remoteGifUrl(exercise);
+      if (!url) return false;
+
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) return false;
+        const blob = await response.blob();
+        if (!isGifBlob(blob)) return false;
+        const header = new Uint8Array(await blob.slice(0, 3).arrayBuffer());
+        if (!(header[0] === 0x47 && header[1] === 0x49 && header[2] === 0x46)) return false;
+        await saveCachedGif(key, blob);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    async function downloadAllGifs() {
+      if (isDownloading || !allExercises.length) return;
+      if (!(await checkCdnOnline())) {
+        await updateCacheStatus();
+        return;
+      }
+
+      isDownloading = true;
+      downloadCancelled = false;
+      const items = allExercises.filter((e) => e.id);
+      let done = 0;
+      setCacheProgress(0, items.length, "Caching GIFs for offline use…");
+
+      const queue = [...items];
+      const workers = Array.from({ length: DOWNLOAD_CONCURRENCY }, async () => {
+        while (queue.length && !downloadCancelled) {
+          const exercise = queue.shift();
+          if (!exercise) break;
+          const hadCache = await getCachedBlob(getCacheKey(exercise));
+          if (!hadCache) await downloadGifForExercise(exercise);
+          done += 1;
+          setCacheProgress(done, items.length);
+          await updateCacheStatus();
+        }
+      });
+
+      await Promise.all(workers);
+      isDownloading = false;
+      hideCacheProgress();
+
+      if (!downloadCancelled) {
+        $("media-notice").hidden = true;
+        applyFilters();
+      }
+      await updateCacheStatus();
+    }
+
+    async function tryAutoDownload(options = {}) {
+      const { forceCache = false } = options;
+      if (isDownloading) return;
+
+      await checkCdnOnline();
+      await updateCacheStatus();
+      $("media-notice").hidden = true;
+
+      // Local gifs/ folder — files are already on disk, no re-download on every reload
+      if (activeMediaMode === "local-id" && !forceCache) {
+        return;
+      }
+
+      const cached = await getCachedCount();
+      const total = allExercises.length;
+      if (cached >= total && total > 0) {
+        return;
+      }
+
+      if (cdnOnline) {
+        downloadAllGifs();
+      } else if (cached === 0 && getStored("exercises-media-notice-dismissed", "") !== "1") {
+        showMediaNotice();
+      }
+    }
+
+    function scheduleCdnChecks() {
+      if (cdnCheckTimer) clearInterval(cdnCheckTimer);
+      cdnCheckTimer = setInterval(() => {
+        if (!isDownloading) tryAutoDownload();
+      }, CDN_CHECK_INTERVAL_MS);
+    }
+
+    async function cacheGifFromUrl(exercise, url) {
+      const key = getCacheKey(exercise);
+      if (!key || !url || url.startsWith("blob:")) return;
+      if (await getCachedBlob(key)) return;
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        if (isGifBlob(blob)) await saveCachedGif(key, blob);
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function getMediaBase() {
+      return getStored("exercises-media-base", "").trim();
+    }
+
+    function getRapidApiKey() {
+      return getStored("exercises-rapidapi-key", "").trim();
+    }
+
+    function mediaCandidates(exercise) {
+      const mediaId = exercise.media_id;
+      const urls = [];
+
+      const local = localGifUrl(exercise);
+      if (local) urls.push(local);
+
+      const backup = backupGifUrl(exercise);
+      if (backup) urls.push(backup);
+
+      const customBase = getMediaBase();
+      if (customBase && mediaId) {
+        urls.push(customBase.replace(/\/?$/, "/") + mediaId + ".gif");
+      }
+
+      const rapidKey = getRapidApiKey();
+      if (rapidKey && mediaId) {
+        urls.push(
+          `${RAPIDAPI_IMAGE}?exerciseId=${encodeURIComponent(mediaId)}&resolution=180&rapidapi-key=${encodeURIComponent(rapidKey)}`
+        );
+      }
+
+      if (mediaId) urls.push(`media/${mediaId}.gif`);
+      if (exercise.id) {
+        urls.push(`media/${exercise.id}.gif`);
+        if (mediaId) {
+          urls.push(`media/${exercise.id}-${mediaId}.gif`);
+          urls.push(`videos/${exercise.id}-${mediaId}.gif`);
+        }
+      }
+
+      if (exercise.gif_url) urls.push(mediaUrl(exercise.gif_url));
+      if (exercise.resolved_gif_url) urls.push(exercise.resolved_gif_url);
+
+      if (activeCdnBase && activeMediaMode === "media-id" && mediaId) {
+        urls.push(activeCdnBase.replace(/\/?$/, "/") + mediaId + ".gif");
+      }
+
+      for (const base of CDN_SOURCES) {
+        if (mediaId) urls.push(base + mediaId + ".gif");
+      }
+
+      return [...new Set(urls.filter(Boolean))];
+    }
+
+    function showMediaNotice() {
+      if (getStored("exercises-media-notice-dismissed", "") === "1") return;
+      $("media-notice").hidden = false;
+    }
+
+    async function bindMediaFallback(img, exercise, placeholder) {
+      if (getCacheKey(exercise)) {
+        const cached = await getCachedBlobUrlForExercise(exercise);
+        if (cached) {
+          img.onerror = null;
+          img.onload = null;
+          img.classList.remove("img-error");
+          if (placeholder) {
+            placeholder.classList.add("hidden");
+            placeholder.setAttribute("aria-hidden", "true");
+          }
+          img.src = cached;
+          return;
+        }
+      }
+
+      const candidates = mediaCandidates(exercise);
+      let index = 0;
+
+      const showPlaceholder = () => {
+        img.onerror = null;
+        img.onload = null;
+        img.classList.add("img-error");
+        img.removeAttribute("src");
+        if (placeholder) {
+          placeholder.classList.remove("hidden");
+          placeholder.setAttribute("aria-hidden", "false");
+        }
+        if (activeMediaMode !== "local-id") {
+          showMediaNotice();
+        }
+      };
+
+      img.onload = () => {
+        img.classList.remove("img-error");
+        if (placeholder) {
+          placeholder.classList.add("hidden");
+          placeholder.setAttribute("aria-hidden", "true");
+        }
+        if (img.src && !img.src.startsWith("blob:")) {
+          cacheGifFromUrl(exercise, img.src).then(updateCacheStatus);
+        }
+      };
+
+      img.onerror = () => {
+        if (index >= candidates.length) {
+          showPlaceholder();
+          return;
+        }
+        img.classList.remove("img-error");
+        if (placeholder) {
+          placeholder.classList.add("hidden");
+          placeholder.setAttribute("aria-hidden", "true");
+        }
+        img.src = candidates[index++];
+      };
+
+      if (!candidates.length) {
+        showPlaceholder();
+        return;
+      }
+      img.src = candidates[index++];
+    }
+
+    function exerciseImageUrl(exercise) {
+      return mediaCandidates(exercise)[0] || "";
+    }
+
+    function exerciseGifUrl(exercise) {
+      return mediaCandidates(exercise)[0] || "";
+    }
+
+    async function initMediaSettings() {
+      $("media-base").value = getMediaBase();
+      $("rapidapi-key").value = getRapidApiKey();
+      await openMediaDb();
+      await updateCacheStatus();
+    }
+
+    function saveMediaSettings() {
+      setStored("exercises-media-base", $("media-base").value.trim());
+      setStored("exercises-rapidapi-key", $("rapidapi-key").value.trim());
+      if (allExercises.length) applyFilters();
     }
 
     function uniqueSorted(values) {
@@ -1079,10 +1786,21 @@
       card.className = "card";
       card.tabIndex = 0;
 
+      const mediaWrap = document.createElement("div");
+      mediaWrap.className = "card-media";
+
       const img = document.createElement("img");
-      img.src = mediaUrl(exercise.image);
       img.alt = exercise.name;
       img.loading = "lazy";
+      img.decoding = "async";
+
+      const placeholder = document.createElement("div");
+      placeholder.className = "media-placeholder hidden";
+      placeholder.textContent = "💪";
+      placeholder.setAttribute("aria-hidden", "true");
+
+      mediaWrap.append(img, placeholder);
+      bindMediaFallback(img, exercise, placeholder);
 
       const body = document.createElement("div");
       body.className = "card-body";
@@ -1113,7 +1831,7 @@
 
       info.append(title, tags, listMeta);
       body.append(info);
-      card.append(img, body);
+      card.append(mediaWrap, body);
 
       const open = () => openModal(exercise);
       card.addEventListener("click", open);
@@ -1174,8 +1892,9 @@
       activeExercise = exercise;
       selectedLang = "en";
 
-      $("modal-gif").src = mediaUrl(exercise.gif_url);
       $("modal-gif").alt = exercise.name;
+      $("modal-gif").classList.remove("img-error");
+      bindMediaFallback($("modal-gif"), exercise, $("modal-media-placeholder"));
       $("modal-title").textContent = exercise.name;
 
       const meta = [
@@ -1227,6 +1946,8 @@
       $("modal-overlay").classList.remove("open");
       $("modal-overlay").setAttribute("aria-hidden", "true");
       $("modal-gif").src = "";
+      $("modal-gif").classList.remove("img-error");
+      $("modal-media-placeholder").classList.add("hidden");
       activeExercise = null;
       setBodyScrollLocked(false);
     }
@@ -1249,11 +1970,16 @@
     }
 
     async function loadExercises() {
+      if (isFileProtocol()) {
+        showServeRequiredError();
+        return;
+      }
+
       $("status").hidden = false;
       $("status").className = "status";
       $("status").innerHTML = `
         <div class="spinner"></div>
-        <p>Loading exercises from GitHub...</p>
+        <p>Loading exercises from data/exercises.json…</p>
       `;
       $("exercises").innerHTML = "";
       $("exercises").classList.add("is-empty");
@@ -1274,19 +2000,54 @@
         populateSelect($("filter-equipment"), uniqueSorted(allExercises.map((e) => e.equipment)), "equipment");
         populateSelect($("filter-target"), uniqueSorted(allExercises.map((e) => e.target)), "targets");
 
+        await checkCdnOnline();
         enableControls();
         applyFilters();
+        await updateCacheStatus();
+        tryAutoDownload();
+        scheduleCdnChecks();
       } catch (err) {
         console.error(err);
         showError(
-          `Failed to fetch dataset. ${err.message}<br><br>` +
-          `If you opened this file locally, make sure you have an internet connection. ` +
-          `The data is loaded from <code>${DATA_URL}</code>.`
+          `Could not load <code>data/exercises.json</code>. ${err.message}<br><br>` +
+          `If the file is missing, run <code>npm run download</code> once. ` +
+          `Otherwise use <code>npm run serve</code> and open <strong>http://localhost:3000</strong>.`
         );
       }
     }
 
     initPreferences();
+    initMediaSettings();
+
+    $("dismiss-media-notice").addEventListener("click", () => {
+      $("media-notice").hidden = true;
+      setStored("exercises-media-notice-dismissed", "1");
+    });
+
+    $("save-media-settings").addEventListener("click", saveMediaSettings);
+
+    $("check-cdn-btn").addEventListener("click", () => {
+      downloadCancelled = false;
+      tryAutoDownload({ forceCache: true });
+    });
+
+    $("clear-cache-btn").addEventListener("click", async () => {
+      if (confirm("Clear all cached GIFs from this browser?")) {
+        await clearMediaCache();
+      }
+    });
+
+    $("cancel-cache-download").addEventListener("click", () => {
+      downloadCancelled = true;
+      isDownloading = false;
+      hideCacheProgress();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && allExercises.length) {
+        tryAutoDownload();
+      }
+    });
 
     $("theme-toggle").addEventListener("click", () => {
       applyTheme(theme === "dark" ? "light" : "dark");

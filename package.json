@@ -1,0 +1,8 @@
+{
+  "name": "exercises-browser",
+  "private": true,
+  "scripts": {
+    "download": "node scripts/download-data.js",
+    "serve": "npx serve ."
+  }
+}
