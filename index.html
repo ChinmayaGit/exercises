@@ -124,6 +124,17 @@
       flex-shrink: 0;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .stats-btn {
+      font-size: 1rem;
+    }
+
     .toggle-group {
       display: flex;
       border: 1px solid var(--border);
@@ -380,17 +391,6 @@
       font-size: 1.2rem;
     }
 
-    .filter-sheet--dropdown .filter-sheet-search-wrap {
-      padding: 0 0.75rem 0.55rem;
-    }
-
-    .filter-sheet--dropdown .filter-sheet-search-wrap input {
-      min-height: 40px;
-      padding: 0.55rem 0.75rem;
-      font-size: 0.9rem;
-      border-radius: 12px;
-    }
-
     .filter-sheet--dropdown .filter-sheet-list {
       padding: 0.55rem 0.75rem 0.75rem;
       gap: 0.6rem;
@@ -450,27 +450,6 @@
       line-height: 1;
       cursor: pointer;
       flex-shrink: 0;
-    }
-
-    .filter-sheet-search-wrap {
-      padding: 0.85rem 1rem 0;
-      flex-shrink: 0;
-    }
-
-    .filter-sheet-search-wrap input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      min-height: 48px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 16px;
-      outline: none;
-    }
-
-    .filter-sheet-search-wrap input:focus {
-      border-color: var(--accent);
     }
 
     .filter-sheet-list {
@@ -1254,9 +1233,14 @@
         white-space: nowrap;
       }
 
-      #theme-toggle {
+      #theme-toggle,
+      .header-actions {
         grid-column: 2;
         grid-row: 1;
+      }
+
+      .header-actions {
+        justify-self: end;
       }
 
       .toolbar {
@@ -1395,40 +1379,6 @@
         width: 44px;
         height: 44px;
       }
-
-      .stats-fab {
-        bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-      }
-    }
-
-    .stats-fab {
-      position: fixed;
-      right: max(0.85rem, env(safe-area-inset-right, 0px));
-      bottom: max(1rem, env(safe-area-inset-bottom, 0px));
-      z-index: 160;
-      width: 48px;
-      height: 48px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      background: var(--surface);
-      color: var(--muted);
-      font-size: 1.15rem;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      touch-action: manipulation;
-      opacity: 0.75;
-      transition: opacity 0.2s, transform 0.15s, border-color 0.2s;
-    }
-
-    .stats-fab:hover {
-      opacity: 1;
-      border-color: var(--accent);
-      transform: scale(1.05);
-    }
-
-    body.modal-open .stats-fab,
-    body.filter-sheet-open .stats-fab {
-      display: none;
     }
 
     .admin-overlay {
@@ -1630,7 +1580,10 @@
             </button>
           </div>
         </div>
-        <button type="button" id="theme-toggle" class="icon-btn" aria-label="Switch to light mode" title="Toggle theme">☀️</button>
+        <div class="header-actions">
+          <button type="button" id="stats-btn" class="icon-btn stats-btn" aria-label="Server stats" title="Stats">📊</button>
+          <button type="button" id="theme-toggle" class="icon-btn" aria-label="Switch to light mode" title="Toggle theme">☀️</button>
+        </div>
       </div>
     </div>
   </header>
@@ -1654,30 +1607,24 @@
     </div>
     <div class="filter-row" id="filter-bar">
       <div class="filter-chip">
-        <select id="filter-category" class="filter-native" disabled>
-          <option value="">All categories</option>
-        </select>
+        <select id="filter-category" class="filter-native" disabled></select>
         <button type="button" class="filter-trigger" data-filter="filter-category" disabled>
           <span class="filter-trigger-label">Category</span>
-          <span class="filter-trigger-value" id="filter-category-display">All categories</span>
+          <span class="filter-trigger-value" id="filter-category-display">Category</span>
         </button>
       </div>
       <div class="filter-chip">
-        <select id="filter-equipment" class="filter-native" disabled>
-          <option value="">All equipment</option>
-        </select>
+        <select id="filter-equipment" class="filter-native" disabled></select>
         <button type="button" class="filter-trigger" data-filter="filter-equipment" disabled>
           <span class="filter-trigger-label">Equipment</span>
-          <span class="filter-trigger-value" id="filter-equipment-display">All equipment</span>
+          <span class="filter-trigger-value" id="filter-equipment-display">Equipment</span>
         </button>
       </div>
       <div class="filter-chip">
-        <select id="filter-target" class="filter-native" disabled>
-          <option value="">All targets</option>
-        </select>
+        <select id="filter-target" class="filter-native" disabled></select>
         <button type="button" class="filter-trigger" data-filter="filter-target" disabled>
           <span class="filter-trigger-label">Target</span>
-          <span class="filter-trigger-value" id="filter-target-display">All targets</span>
+          <span class="filter-trigger-value" id="filter-target-display">Target</span>
         </button>
       </div>
     </div>
@@ -1714,9 +1661,6 @@
         <h2 id="filter-sheet-title">Filter</h2>
         <button type="button" class="filter-sheet-close" id="filter-sheet-close" aria-label="Close">&times;</button>
       </div>
-      <div class="filter-sheet-search-wrap">
-        <input type="search" id="filter-sheet-search" placeholder="Search options…" autocomplete="off" />
-      </div>
       <ul id="filter-sheet-list" class="filter-sheet-list" role="listbox"></ul>
     </div>
   </div>
@@ -1736,8 +1680,6 @@
       </div>
     </div>
   </div>
-
-  <button type="button" id="stats-fab" class="stats-fab" aria-label="Server stats" title="Stats">📊</button>
 
   <div id="pin-overlay" class="admin-overlay" aria-hidden="true">
     <div class="admin-card" role="dialog" aria-modal="true" aria-labelledby="pin-title">
@@ -1960,14 +1902,15 @@
     }
 
     function syncFilterDisplays() {
-      for (const { id } of FILTER_CONFIG) {
+      for (const { id, label } of FILTER_CONFIG) {
         const select = $(id);
         const display = $(`${id}-display`);
         const trigger = document.querySelector(`.filter-trigger[data-filter="${id}"]`);
         if (!select || !display) continue;
 
         const selected = select.selectedOptions[0];
-        display.textContent = selected ? selected.textContent : "All";
+        display.textContent =
+          select.value && selected ? selected.textContent : label;
         if (trigger) {
           trigger.classList.toggle("has-value", Boolean(select.value));
           trigger.disabled = select.disabled;
@@ -1975,16 +1918,15 @@
       }
     }
 
-    function buildFilterSheetList(query) {
+    function buildFilterSheetList() {
       if (!activeFilterId) return;
       const select = $(activeFilterId);
       const list = $("filter-sheet-list");
-      const q = query.trim().toLowerCase();
       list.innerHTML = "";
 
       for (const option of select.options) {
+        if (!option.value) continue;
         const text = option.textContent || "";
-        if (q && !text.toLowerCase().includes(q)) continue;
 
         const item = document.createElement("li");
         const btn = document.createElement("button");
@@ -2012,8 +1954,7 @@
       const mobile = isMobileFilterSheet();
 
       $("filter-sheet-title").textContent = config ? config.label : "Filter";
-      $("filter-sheet-search").value = "";
-      buildFilterSheetList("");
+      buildFilterSheetList();
 
       sheet.classList.remove("filter-sheet--mobile", "filter-sheet--dropdown");
       sheet.classList.add(mobile ? "filter-sheet--mobile" : "filter-sheet--dropdown");
@@ -2034,8 +1975,6 @@
       if (mobile) {
         setBodyScrollLocked(true);
       }
-
-      $("filter-sheet-search").focus();
     }
 
     function closeFilterSheet() {
@@ -2063,9 +2002,6 @@
 
       $("filter-sheet-close").addEventListener("click", closeFilterSheet);
       $("filter-sheet-backdrop").addEventListener("click", closeFilterSheet);
-      $("filter-sheet-search").addEventListener("input", (e) => {
-        buildFilterSheetList(e.target.value);
-      });
 
       window.addEventListener("resize", () => {
         if ($("filter-sheet").classList.contains("open") && activeFilterId && !isMobileFilterSheet()) {
@@ -2401,7 +2337,7 @@
     }
 
     function initAdminStats() {
-      $("stats-fab").addEventListener("click", handleStatsFabClick);
+      $("stats-btn").addEventListener("click", handleStatsFabClick);
       $("pin-cancel").addEventListener("click", closePinOverlay);
       $("pin-submit").addEventListener("click", submitPin);
       $("pin-input").addEventListener("keydown", (e) => {
@@ -2880,13 +2816,19 @@
       );
     }
 
-    function populateSelect(select, values, label) {
-      select.innerHTML = `<option value="">All ${label}</option>`;
+    function populateSelect(select, values) {
+      const current = select.value;
+      select.innerHTML = "";
       for (const value of values) {
         const option = document.createElement("option");
         option.value = value;
         option.textContent = value;
         select.appendChild(option);
+      }
+      if (current && values.includes(current)) {
+        select.value = current;
+      } else {
+        select.value = "";
       }
       syncFilterDisplays();
     }
@@ -3171,9 +3113,9 @@
           throw new Error("Invalid dataset format — expected a JSON array.");
         }
 
-        populateSelect($("filter-category"), uniqueSorted(allExercises.map((e) => e.category)), "categories");
-        populateSelect($("filter-equipment"), uniqueSorted(allExercises.map((e) => e.equipment)), "equipment");
-        populateSelect($("filter-target"), uniqueSorted(allExercises.map((e) => e.target)), "targets");
+        populateSelect($("filter-category"), uniqueSorted(allExercises.map((e) => e.category)));
+        populateSelect($("filter-equipment"), uniqueSorted(allExercises.map((e) => e.equipment)));
+        populateSelect($("filter-target"), uniqueSorted(allExercises.map((e) => e.target)));
 
         await checkCdnOnline();
         enableControls();
