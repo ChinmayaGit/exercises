@@ -248,9 +248,275 @@
       border-top: 1px solid var(--border);
     }
 
+    #filter-bar {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+      gap: 0.75rem;
+    }
+
     .filter-row select {
       flex: 1 1 140px;
       min-width: 0;
+    }
+
+    .filter-chip {
+      flex: 1 1 180px;
+      min-width: 0;
+      position: relative;
+    }
+
+    .filter-native {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .filter-trigger {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.25rem;
+      width: 100%;
+      min-height: 56px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      cursor: pointer;
+      touch-action: manipulation;
+      text-align: left;
+    }
+
+    .filter-trigger:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .filter-trigger.has-value {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      background: color-mix(in srgb, var(--accent) 10%, var(--surface-2));
+    }
+
+    .filter-trigger.is-open {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .filter-trigger-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .filter-trigger-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.2;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-transform: capitalize;
+    }
+
+    .filter-sheet {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      padding: 0.85rem;
+      padding-top: max(0.85rem, env(safe-area-inset-top, 0px));
+      padding-bottom: max(0.85rem, env(safe-area-inset-bottom, 0px));
+      padding-left: max(0.85rem, env(safe-area-inset-left, 0px));
+      padding-right: max(0.85rem, env(safe-area-inset-right, 0px));
+    }
+
+    .filter-sheet.open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-sheet.filter-sheet--dropdown.open {
+      display: block;
+      padding: 0;
+      pointer-events: none;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-backdrop {
+      background: rgba(0, 0, 0, 0.12);
+      pointer-events: auto;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-panel {
+      position: fixed;
+      flex: none;
+      min-height: 0;
+      max-height: 420px;
+      border-radius: 16px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+      pointer-events: auto;
+      z-index: 301;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-header {
+      padding: 0.75rem 1rem;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-header h2 {
+      font-size: 0.92rem;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-close {
+      width: 34px;
+      height: 34px;
+      font-size: 1.2rem;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-search-wrap {
+      padding: 0 0.75rem 0.55rem;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-search-wrap input {
+      min-height: 40px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.9rem;
+      border-radius: 12px;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-list {
+      padding: 0.55rem 0.75rem 0.75rem;
+      gap: 0.6rem;
+    }
+
+    .filter-sheet--dropdown .filter-sheet-option {
+      padding: 0.75rem 0.9rem;
+      font-size: 0.92rem;
+      border-radius: 12px;
+    }
+
+    .filter-sheet-backdrop {
+      position: absolute;
+      inset: 0;
+      background: var(--overlay);
+      border: none;
+      cursor: pointer;
+    }
+
+    .filter-sheet-panel {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .filter-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .filter-sheet-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .filter-sheet-close {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .filter-sheet-search-wrap {
+      padding: 0.85rem 1rem 0;
+      flex-shrink: 0;
+    }
+
+    .filter-sheet-search-wrap input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    .filter-sheet-search-wrap input:focus {
+      border-color: var(--accent);
+    }
+
+    .filter-sheet-list {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 0.85rem 1rem 1rem;
+      margin: 0;
+    }
+
+    .filter-sheet-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.9rem 1rem;
+      margin-bottom: 0;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.35;
+      text-transform: capitalize;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .filter-sheet-option:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-sheet-option.selected {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .filter-sheet-option:active {
+      transform: scale(0.99);
     }
 
     .search-wrap {
@@ -330,7 +596,8 @@
     #filter-bar { order: 2; }
     #status { order: 3; }
     #exercises { order: 4; }
-    #load-more { order: 5; }
+    #pagination { order: 5; }
+    .media-settings { order: 6; }
 
     .exercises {
       width: 100%;
@@ -407,7 +674,7 @@
     .view-list .card {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: stretch;
     }
 
     .card img {
@@ -418,11 +685,18 @@
       height: 100%;
     }
 
+    .view-list .card-media img {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+    }
+
     .card-media {
       position: relative;
       flex-shrink: 0;
       background: var(--surface-2);
       overflow: hidden;
+      line-height: 0;
     }
 
     .view-grid .card-media {
@@ -432,7 +706,8 @@
 
     .view-list .card-media {
       width: 112px;
-      height: 84px;
+      min-height: 84px;
+      align-self: stretch;
     }
 
     .card-media .media-placeholder {
@@ -508,6 +783,45 @@
       background: var(--surface-2);
       color: var(--muted);
       text-transform: capitalize;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.25rem 0 2rem;
+      flex-wrap: wrap;
+    }
+
+    .pagination button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.95rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .pagination button:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+
+    .pagination button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    #page-info {
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-width: 7rem;
+      text-align: center;
     }
 
     .load-more-wrap {
@@ -678,6 +992,8 @@
     .media-settings {
       width: 100%;
       margin-top: 0.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
       font-size: 0.85rem;
     }
 
@@ -859,7 +1175,64 @@
         padding: 0.75rem;
         padding-left: calc(0.75rem + env(safe-area-inset-left, 0px));
         padding-right: calc(0.75rem + env(safe-area-inset-right, 0px));
-        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+      }
+
+      #filter-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 150;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0.55rem;
+        margin: 0;
+        padding: 0.65rem 0.85rem;
+        padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+        padding-left: max(0.85rem, env(safe-area-inset-left, 0px));
+        padding-right: max(0.85rem, env(safe-area-inset-right, 0px));
+        border-top: 1px solid var(--border);
+        border-bottom: none;
+        background: color-mix(in srgb, var(--surface) 92%, transparent);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      [data-theme="dark"] #filter-bar {
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .filter-chip {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .filter-trigger {
+        min-height: 52px;
+        padding: 0.55rem 0.7rem;
+        gap: 0.2rem;
+      }
+
+      .filter-trigger-label {
+        font-size: 0.65rem;
+      }
+
+      .filter-trigger-value {
+        font-size: 0.82rem;
+      }
+
+      body.filter-sheet-open #filter-bar {
+        display: none !important;
+      }
+
+      body.modal-open #filter-bar {
+        display: none !important;
+      }
+
+      .media-settings {
+        margin-bottom: 0.5rem;
       }
 
       .title-row {
@@ -924,21 +1297,6 @@
         width: 100%;
       }
 
-      #filter-bar {
-        order: 6;
-        margin-top: 0.75rem;
-        padding-top: 0.75rem;
-      }
-
-      .filter-row {
-        flex-direction: column;
-      }
-
-      .filter-row select {
-        width: 100%;
-        flex: none;
-      }
-
       .stats {
         text-align: center;
         white-space: normal;
@@ -957,9 +1315,9 @@
         font-size: 0.85rem;
       }
 
-      .view-list .card img {
-        width: 88px;
-        height: 66px;
+      .view-list .card-media {
+        width: 96px;
+        min-height: 72px;
       }
 
       .subtitle {
@@ -970,10 +1328,30 @@
     @media (min-width: 640px) {
       #filter-bar {
         order: 2;
+        position: static;
         margin-top: 0;
-        padding-top: 0;
-        padding-bottom: 1rem;
-        border-top: none;
+        margin-bottom: 1rem;
+        padding: 0;
+        gap: 0.85rem;
+        box-shadow: none;
+        backdrop-filter: none;
+      }
+
+      #status {
+        order: 3;
+      }
+
+      #exercises {
+        order: 4;
+      }
+
+      #pagination {
+        order: 5;
+      }
+
+      .media-settings {
+        order: 6;
+        margin-bottom: 1.5rem;
       }
 
       .controls {
@@ -998,7 +1376,7 @@
 
     [data-platform="android"] .toggle-group button,
     [data-platform="android"] .icon-btn,
-    [data-platform="android"] .load-more-wrap button,
+    [data-platform="android"] .pagination button,
     [data-platform="android"] .retry-btn {
       min-height: 48px;
     }
@@ -1017,6 +1395,221 @@
         width: 44px;
         height: 44px;
       }
+
+      .stats-fab {
+        bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+      }
+    }
+
+    .stats-fab {
+      position: fixed;
+      right: max(0.85rem, env(safe-area-inset-right, 0px));
+      bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+      z-index: 160;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      touch-action: manipulation;
+      opacity: 0.75;
+      transition: opacity 0.2s, transform 0.15s, border-color 0.2s;
+    }
+
+    .stats-fab:hover {
+      opacity: 1;
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    body.modal-open .stats-fab,
+    body.filter-sheet-open .stats-fab {
+      display: none;
+    }
+
+    .admin-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 350;
+      background: var(--overlay);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      padding-top: max(1rem, env(safe-area-inset-top, 0px));
+      padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    }
+
+    .admin-overlay.open {
+      display: flex;
+    }
+
+    .admin-card {
+      width: min(100%, 380px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+    }
+
+    .admin-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .admin-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      line-height: 1.45;
+    }
+
+    .admin-card input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .admin-card input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .pin-error {
+      color: var(--danger);
+      font-size: 0.8rem;
+      min-height: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .admin-actions button {
+      min-height: 44px;
+      padding: 0.55rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .admin-actions button.primary {
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .stats-panel {
+      width: min(100%, 720px);
+      max-height: min(92vh, 92dvh);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .stats-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .stats-panel-header h2 {
+      font-size: 1.05rem;
+    }
+
+    .stats-panel-header p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .stats-panel-body {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .stats-section {
+      margin-bottom: 1.25rem;
+    }
+
+    .stats-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .stats-section h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.55rem;
+    }
+
+    .stat-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.7rem 0.8rem;
+    }
+
+    .stat-box .label {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+
+    .stat-box .value {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .stats-footnote {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.45;
     }
   </style>
 </head>
@@ -1059,40 +1652,74 @@
       </div>
       <span class="stats" id="stats"></span>
     </div>
+    <div class="filter-row" id="filter-bar">
+      <div class="filter-chip">
+        <select id="filter-category" class="filter-native" disabled>
+          <option value="">All categories</option>
+        </select>
+        <button type="button" class="filter-trigger" data-filter="filter-category" disabled>
+          <span class="filter-trigger-label">Category</span>
+          <span class="filter-trigger-value" id="filter-category-display">All categories</span>
+        </button>
+      </div>
+      <div class="filter-chip">
+        <select id="filter-equipment" class="filter-native" disabled>
+          <option value="">All equipment</option>
+        </select>
+        <button type="button" class="filter-trigger" data-filter="filter-equipment" disabled>
+          <span class="filter-trigger-label">Equipment</span>
+          <span class="filter-trigger-value" id="filter-equipment-display">All equipment</span>
+        </button>
+      </div>
+      <div class="filter-chip">
+        <select id="filter-target" class="filter-native" disabled>
+          <option value="">All targets</option>
+        </select>
+        <button type="button" class="filter-trigger" data-filter="filter-target" disabled>
+          <span class="filter-trigger-label">Target</span>
+          <span class="filter-trigger-value" id="filter-target-display">All targets</span>
+        </button>
+      </div>
+    </div>
     <div id="status" class="status">
       <div class="spinner"></div>
       <p>Loading exercises from data/exercises.json…</p>
     </div>
     <div id="exercises" class="exercises view-grid is-empty"></div>
-    <div id="load-more" class="load-more-wrap" hidden>
-      <button type="button" id="load-more-btn">Load more</button>
+    <div id="pagination" class="pagination" hidden>
+      <button type="button" id="prev-page" aria-label="Previous page">‹ Prev</button>
+      <span id="page-info">Page 1 of 1</span>
+      <button type="button" id="next-page" aria-label="Next page">Next ›</button>
     </div>
-    <div class="filter-row" id="filter-bar">
-      <select id="filter-category" disabled>
-        <option value="">All categories</option>
-      </select>
-      <select id="filter-equipment" disabled>
-        <option value="">All equipment</option>
-      </select>
-      <select id="filter-target" disabled>
-        <option value="">All targets</option>
-      </select>
-      <details class="media-settings">
-        <summary>Media settings (GIFs not loading?)</summary>
-        <label for="media-base">Custom media base URL (ends with /)</label>
-        <input type="url" id="media-base" placeholder="https://your-cdn.com/media/" />
-        <label for="rapidapi-key">ExerciseDB RapidAPI key (optional)</label>
-        <input type="password" id="rapidapi-key" placeholder="Your RapidAPI key" autocomplete="off" />
-        <p>
-          GIFs load from your local <code>gifs/</code> folder. Use <strong>Cache GIFs offline</strong> only if you want a browser copy in IndexedDB.
-        </p>
-        <p class="cache-status" id="cache-status">Cache: checking…</p>
-        <button type="button" id="save-media-settings">Save &amp; reload images</button>
-        <button type="button" id="check-cdn-btn" class="secondary">Cache GIFs offline</button>
-        <button type="button" id="clear-cache-btn" class="secondary">Clear cache</button>
-      </details>
-    </div>
+    <details class="media-settings">
+      <summary>Media settings (GIFs not loading?)</summary>
+      <label for="media-base">Custom media base URL (ends with /)</label>
+      <input type="url" id="media-base" placeholder="https://your-cdn.com/media/" />
+      <label for="rapidapi-key">ExerciseDB RapidAPI key (optional)</label>
+      <input type="password" id="rapidapi-key" placeholder="Your RapidAPI key" autocomplete="off" />
+      <p>
+        GIFs load from your local <code>gifs/</code> folder. Use <strong>Cache GIFs offline</strong> only if you want a browser copy in IndexedDB.
+      </p>
+      <p class="cache-status" id="cache-status">Cache: checking…</p>
+      <button type="button" id="save-media-settings">Save &amp; reload images</button>
+      <button type="button" id="check-cdn-btn" class="secondary">Cache GIFs offline</button>
+      <button type="button" id="clear-cache-btn" class="secondary">Clear cache</button>
+    </details>
   </main>
+
+  <div id="filter-sheet" class="filter-sheet" aria-hidden="true">
+    <button type="button" class="filter-sheet-backdrop" id="filter-sheet-backdrop" aria-label="Close filter list"></button>
+    <div class="filter-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="filter-sheet-title">
+      <div class="filter-sheet-header">
+        <h2 id="filter-sheet-title">Filter</h2>
+        <button type="button" class="filter-sheet-close" id="filter-sheet-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="filter-sheet-search-wrap">
+        <input type="search" id="filter-sheet-search" placeholder="Search options…" autocomplete="off" />
+      </div>
+      <ul id="filter-sheet-list" class="filter-sheet-list" role="listbox"></ul>
+    </div>
+  </div>
 
   <div id="modal-overlay" class="modal-overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
@@ -1107,6 +1734,34 @@
         <div class="lang-tabs" id="lang-tabs"></div>
         <div class="instructions" id="modal-instructions"></div>
       </div>
+    </div>
+  </div>
+
+  <button type="button" id="stats-fab" class="stats-fab" aria-label="Server stats" title="Stats">📊</button>
+
+  <div id="pin-overlay" class="admin-overlay" aria-hidden="true">
+    <div class="admin-card" role="dialog" aria-modal="true" aria-labelledby="pin-title">
+      <h2 id="pin-title">Enter PIN</h2>
+      <p>Enter the admin PIN to view server and usage statistics.</p>
+      <input type="password" id="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••" autocomplete="off" />
+      <p id="pin-error" class="pin-error" aria-live="polite"></p>
+      <div class="admin-actions">
+        <button type="button" id="pin-cancel">Cancel</button>
+        <button type="button" id="pin-submit" class="primary">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="stats-overlay" class="admin-overlay" aria-hidden="true">
+    <div class="stats-panel" role="dialog" aria-modal="true" aria-labelledby="stats-title">
+      <div class="stats-panel-header">
+        <div>
+          <h2 id="stats-title">Server &amp; usage stats</h2>
+          <p id="stats-updated">Updated —</p>
+        </div>
+        <button type="button" class="filter-sheet-close" id="stats-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="stats-panel-body" id="stats-body"></div>
     </div>
   </div>
 
@@ -1130,7 +1785,50 @@
     const DOWNLOAD_CONCURRENCY = 4;
     const CDN_CHECK_INTERVAL_MS = 5 * 60 * 1000;
 
-    const PAGE_SIZE = 48;
+    const PAGE_SIZE = 10;
+    const ADMIN_PIN = "5675";
+    const ADMIN_SESSION_KEY = "exercises-admin-unlocked";
+    const requestMetrics = {
+      total: 0,
+      success: 0,
+      failed: 0,
+      bytes: 0,
+      lastUrl: "",
+      lastAt: null,
+    };
+
+    (function wrapFetchForMetrics() {
+      const nativeFetch = window.fetch.bind(window);
+      window.fetch = async function (...args) {
+        requestMetrics.total += 1;
+        const url = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
+        requestMetrics.lastUrl = url;
+        try {
+          const response = await nativeFetch(...args);
+          if (response.ok) requestMetrics.success += 1;
+          else requestMetrics.failed += 1;
+          try {
+            const copy = response.clone();
+            const buffer = await copy.arrayBuffer();
+            requestMetrics.bytes += buffer.byteLength;
+          } catch {
+            /* ignore */
+          }
+          requestMetrics.lastAt = new Date();
+          return response;
+        } catch (err) {
+          requestMetrics.failed += 1;
+          requestMetrics.lastAt = new Date();
+          throw err;
+        }
+      };
+    })();
+    const FILTER_CONFIG = [
+      { id: "filter-category", label: "Category" },
+      { id: "filter-equipment", label: "Equipment" },
+      { id: "filter-target", label: "Target" },
+    ];
+    let activeFilterId = null;
     const LANGS = [
       { code: "en", label: "EN" },
       { code: "es", label: "ES" },
@@ -1142,7 +1840,7 @@
 
     let allExercises = [];
     let filtered = [];
-    let visibleCount = 0;
+    let currentPage = 1;
     let selectedLang = "en";
     let activeExercise = null;
     let viewMode = "grid";
@@ -1220,6 +1918,162 @@
       document.body.classList.toggle("modal-open", locked);
     }
 
+    function isMobileFilterSheet() {
+      return window.matchMedia("(max-width: 639px)").matches;
+    }
+
+    function clearDesktopFilterSheetPosition() {
+      const panel = document.querySelector(".filter-sheet-panel");
+      if (!panel) return;
+      panel.style.top = "";
+      panel.style.left = "";
+      panel.style.width = "";
+      panel.style.maxHeight = "";
+    }
+
+    function positionDesktopFilterSheet(filterId) {
+      const panel = document.querySelector(".filter-sheet-panel");
+      const trigger = document.querySelector(`.filter-trigger[data-filter="${filterId}"]`);
+      if (!panel || !trigger) return;
+
+      const rect = trigger.getBoundingClientRect();
+      const viewportPad = 12;
+      const panelWidth = Math.max(Math.min(rect.width, 360), 280);
+      let left = Math.min(rect.left, window.innerWidth - panelWidth - viewportPad);
+      left = Math.max(viewportPad, left);
+
+      const spaceBelow = window.innerHeight - rect.bottom - viewportPad;
+      const spaceAbove = rect.top - viewportPad;
+      const preferredHeight = Math.min(420, Math.max(220, spaceBelow - 8));
+
+      if (spaceBelow >= 200 || spaceBelow >= spaceAbove) {
+        panel.style.top = `${rect.bottom + 6}px`;
+        panel.style.maxHeight = `${preferredHeight}px`;
+      } else {
+        const height = Math.min(420, spaceAbove - 8);
+        panel.style.top = `${rect.top - height - 6}px`;
+        panel.style.maxHeight = `${height}px`;
+      }
+
+      panel.style.left = `${left}px`;
+      panel.style.width = `${panelWidth}px`;
+    }
+
+    function syncFilterDisplays() {
+      for (const { id } of FILTER_CONFIG) {
+        const select = $(id);
+        const display = $(`${id}-display`);
+        const trigger = document.querySelector(`.filter-trigger[data-filter="${id}"]`);
+        if (!select || !display) continue;
+
+        const selected = select.selectedOptions[0];
+        display.textContent = selected ? selected.textContent : "All";
+        if (trigger) {
+          trigger.classList.toggle("has-value", Boolean(select.value));
+          trigger.disabled = select.disabled;
+        }
+      }
+    }
+
+    function buildFilterSheetList(query) {
+      if (!activeFilterId) return;
+      const select = $(activeFilterId);
+      const list = $("filter-sheet-list");
+      const q = query.trim().toLowerCase();
+      list.innerHTML = "";
+
+      for (const option of select.options) {
+        const text = option.textContent || "";
+        if (q && !text.toLowerCase().includes(q)) continue;
+
+        const item = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter-sheet-option";
+        if (option.value === select.value) btn.classList.add("selected");
+        btn.textContent = text;
+        btn.dataset.value = option.value;
+        btn.setAttribute("role", "option");
+        btn.setAttribute("aria-selected", option.value === select.value ? "true" : "false");
+        btn.addEventListener("click", () => {
+          select.value = option.value;
+          select.dispatchEvent(new Event("change", { bubbles: true }));
+          closeFilterSheet();
+        });
+        item.appendChild(btn);
+        list.appendChild(item);
+      }
+    }
+
+    function openFilterSheet(filterId) {
+      activeFilterId = filterId;
+      const config = FILTER_CONFIG.find((item) => item.id === filterId);
+      const sheet = $("filter-sheet");
+      const mobile = isMobileFilterSheet();
+
+      $("filter-sheet-title").textContent = config ? config.label : "Filter";
+      $("filter-sheet-search").value = "";
+      buildFilterSheetList("");
+
+      sheet.classList.remove("filter-sheet--mobile", "filter-sheet--dropdown");
+      sheet.classList.add(mobile ? "filter-sheet--mobile" : "filter-sheet--dropdown");
+
+      document.querySelectorAll(".filter-trigger").forEach((trigger) => {
+        trigger.classList.toggle("is-open", trigger.dataset.filter === filterId);
+      });
+
+      if (!mobile) {
+        clearDesktopFilterSheetPosition();
+        positionDesktopFilterSheet(filterId);
+      }
+
+      sheet.classList.add("open");
+      sheet.setAttribute("aria-hidden", "false");
+      document.body.classList.add("filter-sheet-open");
+
+      if (mobile) {
+        setBodyScrollLocked(true);
+      }
+
+      $("filter-sheet-search").focus();
+    }
+
+    function closeFilterSheet() {
+      $("filter-sheet").classList.remove("open");
+      $("filter-sheet").setAttribute("aria-hidden", "true");
+      $("filter-sheet").classList.remove("filter-sheet--mobile", "filter-sheet--dropdown");
+      document.body.classList.remove("filter-sheet-open");
+      document.querySelectorAll(".filter-trigger").forEach((trigger) => {
+        trigger.classList.remove("is-open");
+      });
+      clearDesktopFilterSheetPosition();
+      activeFilterId = null;
+      if (!$("modal-overlay").classList.contains("open")) {
+        setBodyScrollLocked(false);
+      }
+    }
+
+    function initFilterPickers() {
+      for (const trigger of document.querySelectorAll(".filter-trigger")) {
+        trigger.addEventListener("click", () => {
+          if (trigger.disabled) return;
+          openFilterSheet(trigger.dataset.filter);
+        });
+      }
+
+      $("filter-sheet-close").addEventListener("click", closeFilterSheet);
+      $("filter-sheet-backdrop").addEventListener("click", closeFilterSheet);
+      $("filter-sheet-search").addEventListener("input", (e) => {
+        buildFilterSheetList(e.target.value);
+      });
+
+      window.addEventListener("resize", () => {
+        if ($("filter-sheet").classList.contains("open") && activeFilterId && !isMobileFilterSheet()) {
+          positionDesktopFilterSheet(activeFilterId);
+        }
+      });
+    }
+
     function applyTheme(nextTheme) {
       theme = nextTheme;
       document.documentElement.setAttribute("data-theme", theme);
@@ -1269,6 +2123,297 @@
       if (!relativePath) return "";
       if (/^https?:\/\//i.test(relativePath)) return relativePath;
       return REPO_BASE + relativePath;
+    }
+
+    async function getIndexedDbCacheStats() {
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, "readonly");
+        const req = tx.objectStore(MEDIA_STORE).openCursor();
+        let count = 0;
+        let bytes = 0;
+        req.onsuccess = () => {
+          const cursor = req.result;
+          if (!cursor) {
+            resolve({ count, bytes });
+            return;
+          }
+          count += 1;
+          if (cursor.value instanceof Blob) bytes += cursor.value.size;
+          cursor.continue();
+        };
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes < 0) return "0 B";
+      const units = ["B", "KB", "MB", "GB"];
+      let value = bytes;
+      let unit = 0;
+      while (value >= 1024 && unit < units.length - 1) {
+        value /= 1024;
+        unit += 1;
+      }
+      return `${value.toFixed(unit ? 1 : 0)} ${units[unit]}`;
+    }
+
+    function formatMs(ms) {
+      if (ms == null || Number.isNaN(ms)) return "—";
+      return ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toFixed(2)} s`;
+    }
+
+    function getStorageBytes(storage) {
+      let total = 0;
+      try {
+        for (let i = 0; i < storage.length; i += 1) {
+          const key = storage.key(i) || "";
+          const val = storage.getItem(key) || "";
+          total += (key.length + val.length) * 2;
+        }
+      } catch {
+        return 0;
+      }
+      return total;
+    }
+
+    function getResourceStats() {
+      const entries = performance.getEntriesByType("resource");
+      let transfer = 0;
+      let gifCount = 0;
+      let gifBytes = 0;
+      let jsonCount = 0;
+      let jsonBytes = 0;
+      let totalDuration = 0;
+
+      for (const entry of entries) {
+        transfer += entry.transferSize || entry.encodedBodySize || 0;
+        totalDuration += entry.duration || 0;
+        const name = entry.name.toLowerCase();
+        if (name.includes(".gif")) {
+          gifCount += 1;
+          gifBytes += entry.transferSize || entry.encodedBodySize || 0;
+        }
+        if (name.includes(".json")) {
+          jsonCount += 1;
+          jsonBytes += entry.transferSize || entry.encodedBodySize || 0;
+        }
+      }
+
+      return {
+        count: entries.length,
+        transfer,
+        avgDuration: entries.length ? totalDuration / entries.length : 0,
+        gifCount,
+        gifBytes,
+        jsonCount,
+        jsonBytes,
+      };
+    }
+
+    function getNavigationStats() {
+      const nav = performance.getEntriesByType("navigation")[0];
+      if (!nav) return {};
+      return {
+        ttfb: nav.responseStart - nav.requestStart,
+        domReady: nav.domContentLoadedEventEnd - nav.startTime,
+        load: nav.loadEventEnd - nav.startTime,
+        dns: nav.domainLookupEnd - nav.domainLookupStart,
+        connect: nav.connectEnd - nav.connectStart,
+        transfer: nav.transferSize || nav.encodedBodySize || 0,
+      };
+    }
+
+    function renderStatSection(title, items) {
+      const section = document.createElement("section");
+      section.className = "stats-section";
+      section.innerHTML = `<h3>${title}</h3>`;
+      const grid = document.createElement("div");
+      grid.className = "stats-grid";
+      for (const item of items) {
+        const box = document.createElement("div");
+        box.className = "stat-box";
+        box.innerHTML = `<span class="label">${item.label}</span><span class="value">${item.value}</span>`;
+        grid.appendChild(box);
+      }
+      section.appendChild(grid);
+      return section;
+    }
+
+    async function buildStatsPanel() {
+      const body = $("stats-body");
+      body.innerHTML = "";
+
+      const nav = getNavigationStats();
+      const resources = getResourceStats();
+      const idb = await getIndexedDbCacheStats().catch(() => ({ count: 0, bytes: 0 }));
+      const localBytes = getStorageBytes(localStorage);
+      const sessionBytes = getStorageBytes(sessionStorage);
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      const mem = performance.memory;
+      const uptime = performance.now();
+
+      body.appendChild(renderStatSection("Server / host", [
+        { label: "Origin", value: location.origin },
+        { label: "Protocol", value: location.protocol.replace(":", "") },
+        { label: "Host", value: location.hostname },
+        { label: "Page path", value: location.pathname },
+      ]));
+
+      body.appendChild(renderStatSection("Page load", [
+        { label: "Time to first byte", value: formatMs(nav.ttfb) },
+        { label: "DOM ready", value: formatMs(nav.domReady) },
+        { label: "Full page load", value: formatMs(nav.load) },
+        { label: "DNS lookup", value: formatMs(nav.dns) },
+        { label: "Connect time", value: formatMs(nav.connect) },
+        { label: "HTML transfer", value: formatBytes(nav.transfer) },
+        { label: "Session uptime", value: formatMs(uptime) },
+      ]));
+
+      body.appendChild(renderStatSection("Requests & network", [
+        { label: "Resources loaded", value: String(resources.count) },
+        { label: "Resource transfer", value: formatBytes(resources.transfer) },
+        { label: "Avg resource time", value: formatMs(resources.avgDuration) },
+        { label: "GIF requests", value: String(resources.gifCount) },
+        { label: "GIF transfer", value: formatBytes(resources.gifBytes) },
+        { label: "JSON requests", value: String(resources.jsonCount) },
+        { label: "JSON transfer", value: formatBytes(resources.jsonBytes) },
+        { label: "App fetch calls", value: String(requestMetrics.total) },
+        { label: "Fetch success", value: String(requestMetrics.success) },
+        { label: "Fetch failed", value: String(requestMetrics.failed) },
+        { label: "Fetch data", value: formatBytes(requestMetrics.bytes) },
+        { label: "Last fetch", value: requestMetrics.lastAt ? requestMetrics.lastAt.toLocaleTimeString() : "—" },
+      ]));
+
+      if (conn) {
+        body.appendChild(renderStatSection("Connection", [
+          { label: "Type", value: conn.effectiveType || "—" },
+          { label: "Downlink", value: conn.downlink != null ? `${conn.downlink} Mbps` : "—" },
+          { label: "RTT", value: conn.rtt != null ? `${conn.rtt} ms` : "—" },
+          { label: "Save data", value: conn.saveData ? "On" : "Off" },
+        ]));
+      }
+
+      body.appendChild(renderStatSection("Storage", [
+        { label: "IndexedDB GIFs", value: `${idb.count} files` },
+        { label: "IndexedDB size", value: formatBytes(idb.bytes) },
+        { label: "localStorage", value: formatBytes(localBytes) },
+        { label: "sessionStorage", value: formatBytes(sessionBytes) },
+        { label: "Media source", value: activeMediaMode || "—" },
+      ]));
+
+      if (mem) {
+        body.appendChild(renderStatSection("Memory (browser)", [
+          { label: "JS heap used", value: formatBytes(mem.usedJSHeapSize) },
+          { label: "JS heap total", value: formatBytes(mem.totalJSHeapSize) },
+          { label: "JS heap limit", value: formatBytes(mem.jsHeapSizeLimit) },
+        ]));
+      }
+
+      body.appendChild(renderStatSection("App", [
+        { label: "Exercises loaded", value: String(allExercises.length) },
+        { label: "Filtered results", value: String(filtered.length) },
+        { label: "Current page", value: `${currentPage} / ${getTotalPages()}` },
+        { label: "View mode", value: viewMode },
+        { label: "Theme", value: theme },
+        { label: "CDN online", value: cdnOnline ? "Yes" : "No" },
+        { label: "Downloading cache", value: isDownloading ? "Yes" : "No" },
+        { label: "Viewport", value: `${window.innerWidth}×${window.innerHeight}` },
+      ]));
+
+      const note = document.createElement("p");
+      note.className = "stats-footnote";
+      note.textContent =
+        "CPU, RAM, and disk usage of the nginx host are not available from a static page. " +
+        "These stats show what the browser can measure: load times, requests, and local storage.";
+      body.appendChild(note);
+
+      $("stats-updated").textContent = `Updated ${new Date().toLocaleString()}`;
+    }
+
+    function isAdminUnlocked() {
+      try {
+        return sessionStorage.getItem(ADMIN_SESSION_KEY) === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function setAdminUnlocked(unlocked) {
+      try {
+        if (unlocked) sessionStorage.setItem(ADMIN_SESSION_KEY, "1");
+        else sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function openPinOverlay() {
+      $("pin-error").textContent = "";
+      $("pin-input").value = "";
+      $("pin-overlay").classList.add("open");
+      $("pin-overlay").setAttribute("aria-hidden", "false");
+      setBodyScrollLocked(true);
+      setTimeout(() => $("pin-input").focus(), 50);
+    }
+
+    function closePinOverlay() {
+      $("pin-overlay").classList.remove("open");
+      $("pin-overlay").setAttribute("aria-hidden", "true");
+      if (!$("stats-overlay").classList.contains("open") && !$("modal-overlay").classList.contains("open")) {
+        setBodyScrollLocked(false);
+      }
+    }
+
+    async function openStatsPanel() {
+      await buildStatsPanel();
+      $("stats-overlay").classList.add("open");
+      $("stats-overlay").setAttribute("aria-hidden", "false");
+      setBodyScrollLocked(true);
+    }
+
+    function closeStatsPanel() {
+      $("stats-overlay").classList.remove("open");
+      $("stats-overlay").setAttribute("aria-hidden", "true");
+      if (!$("pin-overlay").classList.contains("open") && !$("modal-overlay").classList.contains("open")) {
+        setBodyScrollLocked(false);
+      }
+    }
+
+    function handleStatsFabClick() {
+      if (isAdminUnlocked()) {
+        openStatsPanel();
+      } else {
+        openPinOverlay();
+      }
+    }
+
+    function submitPin() {
+      const pin = $("pin-input").value.trim();
+      if (pin === ADMIN_PIN) {
+        setAdminUnlocked(true);
+        closePinOverlay();
+        openStatsPanel();
+        return;
+      }
+      $("pin-error").textContent = "Incorrect PIN. Try again.";
+      $("pin-input").select();
+    }
+
+    function initAdminStats() {
+      $("stats-fab").addEventListener("click", handleStatsFabClick);
+      $("pin-cancel").addEventListener("click", closePinOverlay);
+      $("pin-submit").addEventListener("click", submitPin);
+      $("pin-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") submitPin();
+      });
+      $("stats-close").addEventListener("click", closeStatsPanel);
+      $("stats-overlay").addEventListener("click", (e) => {
+        if (e.target === $("stats-overlay")) closeStatsPanel();
+      });
+      $("pin-overlay").addEventListener("click", (e) => {
+        if (e.target === $("pin-overlay")) closePinOverlay();
+      });
     }
 
     function openMediaDb() {
@@ -1743,6 +2888,7 @@
         option.textContent = value;
         select.appendChild(option);
       }
+      syncFilterDisplays();
     }
 
     function applyFilters() {
@@ -1771,10 +2917,32 @@
         return haystack.includes(query);
       });
 
-      visibleCount = 0;
+      currentPage = 1;
       $("exercises").innerHTML = "";
       updateStats();
-      renderMore();
+      syncFilterDisplays();
+      renderPage();
+    }
+
+    function getTotalPages() {
+      return Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    }
+
+    function updatePagination() {
+      const totalPages = getTotalPages();
+      const pagination = $("pagination");
+      pagination.hidden = filtered.length === 0;
+      $("page-info").textContent = `Page ${currentPage} of ${totalPages}`;
+      $("prev-page").disabled = currentPage <= 1;
+      $("next-page").disabled = currentPage >= totalPages;
+    }
+
+    function goToPage(page) {
+      const totalPages = getTotalPages();
+      currentPage = Math.max(1, Math.min(page, totalPages));
+      renderPage();
+      const target = $("exercises");
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function updateStats() {
@@ -1845,18 +3013,23 @@
       return card;
     }
 
-    function renderMore() {
+    function renderPage() {
       const container = $("exercises");
-      const end = Math.min(visibleCount + PAGE_SIZE, filtered.length);
-      const slice = filtered.slice(visibleCount, end);
+      container.innerHTML = "";
+
+      const totalPages = getTotalPages();
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end = Math.min(start + PAGE_SIZE, filtered.length);
+      const slice = filtered.slice(start, end);
 
       for (const exercise of slice) {
         container.appendChild(createCard(exercise));
       }
 
-      visibleCount = end;
       setExercisesVisible(filtered.length > 0);
-      $("load-more").hidden = visibleCount >= filtered.length;
+      updatePagination();
 
       if (filtered.length === 0) {
         $("status").hidden = false;
@@ -1889,6 +3062,7 @@
     }
 
     function openModal(exercise) {
+      closeFilterSheet();
       activeExercise = exercise;
       selectedLang = "en";
 
@@ -1956,6 +3130,7 @@
       for (const id of ["search", "filter-category", "filter-equipment", "filter-target"]) {
         $(id).disabled = false;
       }
+      syncFilterDisplays();
     }
 
     function showError(message) {
@@ -1983,7 +3158,7 @@
       `;
       $("exercises").innerHTML = "";
       $("exercises").classList.add("is-empty");
-      $("load-more").hidden = true;
+      $("pagination").hidden = true;
 
       try {
         const response = await fetch(DATA_URL);
@@ -2018,6 +3193,7 @@
 
     initPreferences();
     initMediaSettings();
+    initFilterPickers();
 
     $("dismiss-media-notice").addEventListener("click", () => {
       $("media-notice").hidden = true;
@@ -2060,15 +3236,22 @@
     $("filter-category").addEventListener("change", applyFilters);
     $("filter-equipment").addEventListener("change", applyFilters);
     $("filter-target").addEventListener("change", applyFilters);
-    $("load-more-btn").addEventListener("click", renderMore);
+    $("prev-page").addEventListener("click", () => goToPage(currentPage - 1));
+    $("next-page").addEventListener("click", () => goToPage(currentPage + 1));
     $("modal-close").addEventListener("click", closeModal);
     $("modal-overlay").addEventListener("click", (e) => {
       if (e.target === $("modal-overlay")) closeModal();
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
+      if (e.key === "Escape") {
+        if ($("stats-overlay").classList.contains("open")) closeStatsPanel();
+        else if ($("pin-overlay").classList.contains("open")) closePinOverlay();
+        else if ($("filter-sheet").classList.contains("open")) closeFilterSheet();
+        else closeModal();
+      }
     });
 
+    initAdminStats();
     loadExercises();
   </script>
 </body>
