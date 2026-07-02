@@ -4,16 +4,13 @@ Offline-friendly browser for the [exercises-dataset](https://github.com/hasaneyl
 
 ## Setup
 
-Download the JSON and all GIFs locally:
+Clone or pull this repo — it includes `data/exercises.json` and the `gifs/` folder.
+
+If GIFs are missing, download them:
 
 ```bash
 npm run download
 ```
-
-This creates:
-
-- `data/exercises.json` — exercise metadata
-- `gifs/` — one GIF per exercise (`0001.gif`, …)
 
 ## Run
 
