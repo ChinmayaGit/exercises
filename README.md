@@ -1,5 +1,6 @@
 # Exercises Browser
 PIN: 5675
+
 Offline-friendly browser for the [exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset).
 
 ## Setup
