@@ -3,57 +3,89 @@ PIN: 5675
 
 Offline-friendly browser for the [exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset).
 
-## Setup
+Static files only: `index.html`, `data/exercises.json`, and `gifs/`.  
+No Node.js is required on the server — **nginx is enough**.
 
-Clone or pull this repo — it includes `data/exercises.json` and the `gifs/` folder.
-
-If GIFs are missing, download them:
-
-```bash
-npm run download
-```
-
-## Run
-
-Serve the folder (required — `file://` cannot load local JSON/GIFs):
+## Local run (optional)
 
 ```bash
 npm run serve
 ```
 
-Then open the URL shown (usually http://localhost:3000).
-
-## Host with Nginx (server / VPS)
-
-Unlike the old single-HTML Podroid setup, this app needs a web server because it loads `data/exercises.json` and `gifs/` over HTTP.
-
-**On your server (Linux):**
+If GIFs are missing:
 
 ```bash
-# Install nginx (Debian/Ubuntu)
-sudo apt update && sudo apt install -y nginx
+npm run download
+```
 
-# Clone the project
+## Move from Netlify → Nginx (your own server)
+
+Netlify was only hosting static files. On your VPS/server, nginx does the same job.
+
+### 1. Push latest code to GitHub
+
+From your PC (so the server can pull everything, including `gifs/`):
+
+```bash
+git add -A
+git commit -m "Prepare for nginx hosting"
+git push
+```
+
+### 2. On the server (Ubuntu/Debian)
+
+```bash
+# Install nginx
+sudo apt update && sudo apt install -y nginx git
+
+# Clone the repo (includes data + gifs)
 sudo git clone https://github.com/ChinmayaGit/exercises.git /var/www/exercises
 
-# Use the included config
+# Permissions
+sudo chown -R www-data:www-data /var/www/exercises
+
+# Enable nginx site
 sudo cp /var/www/exercises/deploy/nginx.conf /etc/nginx/sites-available/exercises
 sudo ln -sf /etc/nginx/sites-available/exercises /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/default   # optional: remove default site
+sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
+sudo systemctl enable nginx
 sudo systemctl reload nginx
 ```
 
-Open `http://YOUR_SERVER_IP` in a browser (phone or desktop).
+### 3. Open the site
 
-**Update later:**
+- Browser: `http://YOUR_SERVER_IP`
+- Or your domain if DNS points to this server
+
+### 4. Update later
 
 ```bash
-cd /var/www/exercises && sudo git pull
+cd /var/www/exercises
+sudo git pull
+sudo systemctl reload nginx   # usually not needed for static HTML, but safe
 ```
 
-**HTTPS (optional):** use [Certbot](https://certbot.eff.org/) with Let's Encrypt after you have a domain pointing to the server.
+### 5. HTTPS (optional, recommended)
 
-## Re-download
+After a domain points to the server:
 
-The download script skips GIFs that already exist, so you can safely re-run `npm run download` to resume or refresh.
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d your-domain.com
+```
+
+### 6. Stop using Netlify
+
+In Netlify dashboard: stop auto-deploy or delete the site.  
+Your live URL becomes the server IP/domain instead.
+
+## Firewall tip
+
+If the page does not load, open port 80 (and 443 for HTTPS):
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw reload
+```
